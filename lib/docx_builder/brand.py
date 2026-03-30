@@ -21,6 +21,11 @@ class RGBColor:
     green: int
     blue: int
 
+    def to_docx(self):
+        """Convert to python-docx RGBColor for use with font.color.rgb etc."""
+        from docx.shared import RGBColor as DocxRGBColor
+        return DocxRGBColor(self.red, self.green, self.blue)
+
 
 def _hex_to_rgb(hex_str: str) -> RGBColor:
     """Convert a hex colour string (with or without #) to RGBColor."""
@@ -60,7 +65,7 @@ class Brand:
     primary: str
     accent: str
     body: str
-    light_bg: str = "#F7F9FC"
+    light_bg: str = "#F2F5F8"
     border: str = "#E2E8F0"
     font_family: str = "Helvetica"
     emphasis_weight: int = 500
@@ -83,10 +88,10 @@ class Brand:
             return self._weight_cache[weight]
         family = FontDiscovery.get_family(self.font_family)
         if family is None:
-            raise ValueError(
-                f"Font family {self.font_family!r} not found on this system"
-            )
-        face_name = family.closest(weight)
+            # Font not installed; return family name and let Word handle fallback
+            face_name = self.font_family
+        else:
+            face_name = family.closest(weight)
         self._weight_cache[weight] = face_name
         return face_name
 
@@ -203,7 +208,7 @@ class Brand:
             primary=data["primary"],
             accent=data["accent"],
             body=data["body"],
-            light_bg=data.get("light_bg", "#F7F9FC"),
+            light_bg=data.get("light_bg", "#F2F5F8"),
             border=data.get("border", "#E2E8F0"),
             font_family=data["font_family"],
             emphasis_weight=data.get("emphasis_weight", 500),

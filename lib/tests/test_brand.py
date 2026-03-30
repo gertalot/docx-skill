@@ -65,6 +65,23 @@ class TestBrand:
         assert rgb.green == 0x25
         assert rgb.blue == 0x41
 
+    def test_resolve_weight_missing_font_falls_back(self):
+        brand = Brand(
+            primary="#000", accent="#000", body="#000",
+            font_family="Definitely Not A Real Font",
+        )
+        result = brand.resolve_weight(400)
+        assert result == "Definitely Not A Real Font"
+
+    def test_rgb_to_docx(self):
+        from docx.shared import RGBColor as DocxRGBColor
+        brand = Brand(
+            primary="#1C2541", accent="#6FFFE9", body="#3E465E",
+            font_family="Helvetica",
+        )
+        docx_rgb = brand.primary_rgb.to_docx()
+        assert isinstance(docx_rgb, DocxRGBColor)
+
     def test_logo_path_none_by_default(self):
         brand = Brand(
             primary="#000", accent="#fff", body="#333", font_family="Helvetica"
