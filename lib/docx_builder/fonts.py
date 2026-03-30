@@ -1,10 +1,20 @@
-"""Font discovery: scan system fonts, parse weights, query families."""
+"""Font discovery: scan system fonts, parse weights, query families.
+
+macOS only. Scans /System/Library/Fonts, /Library/Fonts, ~/Library/Fonts.
+"""
 from __future__ import annotations
 
+import logging
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from fontTools.ttLib import TTFont, TTCollection
+
+if sys.platform != "darwin":
+    raise NotImplementedError("Font discovery only supports macOS")
+
+log = logging.getLogger(__name__)
 
 FONT_DIRS = [
     Path("/System/Library/Fonts"),
@@ -16,9 +26,7 @@ FONT_DIRS = [
 WEIGHT_NAMES = {
     100: "Thin",
     200: "Ultra Light",
-    250: "Ultra Light",
     300: "Light",
-    350: "Light",
     400: "Regular",
     500: "Medium",
     600: "Demi Bold",
@@ -78,6 +86,8 @@ class FontFamily:
 
     def closest(self, target: int) -> str:
         """Return the font name for the weight closest to target."""
+        if not self.weights:
+            raise ValueError(f"FontFamily {self.name!r} has no weight variants")
         best = min(self.weights, key=lambda w: abs(w - target))
         return self.weights[best]
 
@@ -114,22 +124,29 @@ class FontDiscovery:
                     continue
                 try:
                     if suffix == ".ttc":
-                        collection = TTCollection(str(path))
-                        fonts = collection.fonts
+                        with TTCollection(str(path)) as collection:
+                            for font in collection.fonts:
+                                info = _extract_font_info(font)
+                                if info is None:
+                                    continue
+                                family_name, weight, full_name = info
+                                if family_name not in families:
+                                    families[family_name] = FontFamily(
+                                        name=family_name,
+                                    )
+                                families[family_name].weights[weight] = full_name
                     else:
-                        fonts = [TTFont(str(path))]
-
-                    for font in fonts:
-                        info = _extract_font_info(font)
-                        if info is None:
-                            continue
-                        family_name, weight, full_name = info
-                        if family_name not in families:
-                            families[family_name] = FontFamily(
-                                name=family_name,
-                            )
-                        families[family_name].weights[weight] = full_name
+                        with TTFont(str(path)) as font:
+                            info = _extract_font_info(font)
+                            if info is not None:
+                                family_name, weight, full_name = info
+                                if family_name not in families:
+                                    families[family_name] = FontFamily(
+                                        name=family_name,
+                                    )
+                                families[family_name].weights[weight] = full_name
                 except Exception:
+                    log.debug("Skipping unreadable font: %s", path)
                     continue
 
         cls._cache = families
