@@ -1,0 +1,18 @@
+[project]
+name = "docx-builder"
+version = "0.1.0"
+description = "Branded Word document generation from markdown"
+requires-python = ">=3.12"
+dependencies = [
+    "python-docx>=1.1.0",
+    "cairosvg>=2.7.0",
+    "Pillow>=10.0.0",
+    "fonttools>=4.40.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
