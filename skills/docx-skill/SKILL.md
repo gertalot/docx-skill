@@ -1,9 +1,9 @@
 ---
-name: docx-builder
+name: docx-skill
 description: Use when creating branded Word documents from markdown, restyling existing documents, or generating .docx files with custom fonts, colours, and layouts
 ---
 
-# docx-builder
+# docx-skill
 
 Generate professionally branded Word documents from markdown using the `docx_builder` Python library.
 

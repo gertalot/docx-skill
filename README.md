@@ -1,4 +1,4 @@
-# docx-builder
+# docx-skill
 
 A Claude Code plugin that generates branded Word documents from markdown.
 
@@ -17,17 +17,17 @@ Give Claude a markdown file and a website URL. It extracts your brand (colours, 
 
 ```bash
 # Add as a plugin marketplace
-/plugin marketplace add your-org/docx-builder
+/plugin marketplace add your-org/docx-skill
 ```
 
 Or install directly:
 
 ```bash
 # Clone to your skills directory
-git clone https://github.com/your-org/docx-builder.git ~/.claude/skills/docx-builder
+git clone https://github.com/your-org/docx-skill.git ~/.claude/skills/docx-skill
 
 # Set up the Python library
-cd ~/.claude/skills/docx-builder/lib
+cd ~/.claude/skills/docx-skill/lib
 python3 -m venv .venv
 .venv/bin/pip install -e .
 ```
@@ -83,7 +83,7 @@ cd lib
 .claude-plugin/
   plugin.json             # Plugin manifest
 skills/
-  docx-builder/
+  docx-skill/
     SKILL.md              # Skill prompt (loaded by Claude Code)
     references/
       brand-extraction.md # Brand extraction checklist
