@@ -1,6 +1,6 @@
 ---
 name: docx-skill
-description: Use when creating branded Word documents from markdown, restyling existing documents, or generating .docx files with custom fonts, colours, and layouts
+description: Use when creating professional Word documents from markdown, restyling existing documents, or generating .docx files with proper typography, layouts, and optional branding from a website
 ---
 
 # docx-skill

@@ -1,16 +1,16 @@
 # docx-skill
 
-A Claude Code plugin that generates branded Word documents from markdown.
+A Claude Code plugin that generates professional Word documents from markdown.
 
-Give Claude a markdown file and a website URL. It extracts your brand (colours, fonts, logo), checks which fonts are installed on your system, and produces a `.docx` with proper typography, a branded cover page, headers, footers, and table of contents.
+Give Claude a markdown file and it produces a `.docx` with proper typography, cover page, headers, footers, styled tables, and table of contents. Optionally provide a website URL to extract colours, fonts, and logo for consistent branding.
 
 ## What it does
 
-- Extracts brand colours, fonts, and logo from a website
+- Converts markdown to formatted .docx: headings, paragraphs, bullet lists, styled tables, page breaks
+- Generates cover pages, headers, footers with page numbers, and table of contents
 - Discovers installed fonts and their weight variants (Thin through Black)
 - Uses actual font weights for emphasis (e.g. "Avenir Next Medium") instead of faking bold
-- Renders markdown to branded .docx: headings with accent underlines, styled tables, bullet lists
-- Generates cover pages, headers with logo, footers with page numbers
+- Optionally extracts colours, fonts, and logo from a website for branding
 - Integrates with [stop-slop](https://github.com/hardikpandya/stop-slop) to clean AI writing patterns from prose before rendering
 
 ## Install
@@ -38,15 +38,15 @@ No further setup needed. The skill creates its Python environment automatically 
 Ask Claude to create a Word document. The skill triggers when you mention creating, generating, or restyling `.docx` files.
 
 ```
-Create a branded whitepaper from docs/whitepaper.md
-Use our brand from https://www.example.com
+Create a whitepaper from docs/whitepaper.md
 ```
 
-Claude will:
-1. Fetch your website and extract brand colours, fonts, and logo
-2. Check which fonts are installed, pick weights
-3. Run stop-slop on the prose content
-4. Generate the `.docx`
+Or with branding from a website:
+
+```
+Create a whitepaper from docs/whitepaper.md
+Use our style from https://www.example.com
+```
 
 ## How the library works
 
@@ -54,11 +54,11 @@ The Python library at `lib/` has four modules:
 
 **`fonts.py`** scans macOS font directories and parses OpenType metadata. You ask it "what weights does Avenir Next have?" and it tells you Regular (400), Medium (500), Demi Bold (600), Bold (700).
 
-**`brand.py`** stores your brand config: five colours (primary, accent, body, light background, border), a font family with chosen emphasis and heading weights, and a logo path. Saves to and loads from JSON.
+**`brand.py`** stores document style config: colours (primary, accent, body, light background, border), a font family with chosen emphasis and heading weights, and an optional logo path. Saves to and loads from JSON.
 
-**`builder.py`** wraps python-docx with branded document building. Sets up page size, styles, cover pages, headers (borderless table when a logo is present, tab stops when text-only), footers, and table of contents.
+**`builder.py`** wraps python-docx with document building methods. Sets up page size, styles, cover pages, headers (borderless table when a logo is present, tab stops when text-only), footers, and table of contents.
 
-**`markdown_parser.py`** converts markdown to docx content. Handles headings, paragraphs, bullet lists, tables, code blocks (skipped), and horizontal rules (page breaks). Emphasis markers render using the brand's emphasis font weight, not a bold flag.
+**`markdown_parser.py`** converts markdown to docx content. Handles headings, paragraphs, bullet lists, tables, code blocks (skipped), and horizontal rules (page breaks). Emphasis markers render using the configured emphasis font weight, not a bold flag.
 
 ## Running tests
 
@@ -83,7 +83,7 @@ lib/
   pyproject.toml          # Python dependencies
   docx_builder/           # Python library
     fonts.py              # Font discovery
-    brand.py              # Brand config
+    brand.py              # Style config
     builder.py            # Document builder
     markdown_parser.py    # Markdown to docx
   tests/                  # 39 tests

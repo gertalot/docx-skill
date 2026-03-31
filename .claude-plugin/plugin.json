@@ -1,6 +1,6 @@
 {
   "name": "docx-skill",
-  "description": "Create branded Word documents from markdown with proper font weights, brand colours, and professional layouts",
+  "description": "Create professional Word documents from markdown with proper font weights, styled tables, and optional branding from a website",
   "version": "1.0.0",
   "author": {
     "name": "Gert Verhoog"
