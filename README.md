@@ -20,17 +20,18 @@ Give Claude a markdown file and a website URL. It extracts your brand (colours, 
 /plugin marketplace add your-org/docx-skill
 ```
 
-Or install directly:
+Or clone directly:
 
 ```bash
-# Clone to your skills directory
 git clone https://github.com/your-org/docx-skill.git ~/.claude/skills/docx-skill
-
-# Set up the Python library
-cd ~/.claude/skills/docx-skill/lib
-python3 -m venv .venv
-.venv/bin/pip install -e .
 ```
+
+No further setup needed. The skill creates its Python environment automatically the first time Claude uses it.
+
+### Prerequisites
+
+- Python 3.12+
+- Cairo (for SVG logo conversion): `brew install cairo`
 
 ## Usage
 
@@ -58,17 +59,6 @@ The Python library at `lib/` has four modules:
 **`builder.py`** wraps python-docx with branded document building. Sets up page size, styles, cover pages, headers (borderless table when a logo is present, tab stops when text-only), footers, and table of contents.
 
 **`markdown_parser.py`** converts markdown to docx content. Handles headings, paragraphs, bullet lists, tables, code blocks (skipped), and horizontal rules (page breaks). Emphasis markers render using the brand's emphasis font weight, not a bold flag.
-
-## Requirements
-
-- macOS (font discovery uses macOS font directories)
-- Python 3.12+
-- System dependencies: Cairo (for SVG-to-PNG logo conversion)
-
-Install Cairo via Homebrew if needed:
-```bash
-brew install cairo
-```
 
 ## Running tests
 

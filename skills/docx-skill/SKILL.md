@@ -7,11 +7,24 @@ description: Use when creating branded Word documents from markdown, restyling e
 
 Generate professionally branded Word documents from markdown using the `docx_builder` Python library.
 
+## Setup (automatic)
+
+Before first use, check if the venv exists. If not, create it:
+
+```bash
+if [ ! -f "{skill_dir}/lib/.venv/bin/python" ]; then
+    python3 -m venv "{skill_dir}/lib/.venv"
+    "{skill_dir}/lib/.venv/bin/pip" install -e "{skill_dir}/lib"
+fi
+```
+
+Run this silently. The user should not see setup output unless it fails.
+
 ## Overview
 
 The library is at `{skill_dir}/lib/`. Run scripts via `{skill_dir}/lib/.venv/bin/python`.
 
-Read the library source to understand the API — it is self-documenting. The key classes are `Brand`, `DocBuilder`, `FontDiscovery`, and the `render_markdown` function.
+Read the library source to understand the API. The key classes are `Brand`, `DocBuilder`, `FontDiscovery`, and the `render_markdown` function.
 
 ## Before Generating: Writing Quality
 
