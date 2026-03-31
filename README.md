@@ -1,17 +1,25 @@
 # docx-skill
 
-A Claude Code plugin that generates professional Word documents from markdown.
+A Claude Code plugin for generating professional Word documents.
 
-Give Claude a markdown file and it produces a `.docx` with proper typography, cover page, headers, footers, styled tables, and table of contents. Optionally provide a website URL to extract colours, fonts, and logo for consistent branding.
+Ask Claude to write a report, convert a markdown file, or draft a proposal. This skill handles the formatting: proper typography, cover pages, headers, footers, styled tables, and table of contents. Provide a website URL and it extracts your colours, fonts, and logo too.
+
+## Writing quality
+
+LLMs produce recognisable writing. Hollow antithesis ("It's not X. It's Y."), breathless transitions, significance inflation, staccato fragments for manufactured emphasis. Readers spot it immediately.
+
+This skill requires Claude to run [stop-slop](https://github.com/hardikpandya/stop-slop) on all prose before rendering it to .docx. stop-slop catches specific AI writing patterns: throat-clearing openers, binary contrasts, dramatic fragmentation, false agency, vague declaratives. It scores text on five dimensions (directness, rhythm, trust, authenticity, density) and revises until the score passes.
+
+The result reads like a person wrote it. The document looks like a designer formatted it.
 
 ## What it does
 
-- Converts markdown to formatted .docx: headings, paragraphs, bullet lists, styled tables, page breaks
-- Generates cover pages, headers, footers with page numbers, and table of contents
+- Generates .docx files from any source: markdown files, scratch, conversation
+- Cover pages, headers with logo, footers with page numbers, table of contents
 - Discovers installed fonts and their weight variants (Thin through Black)
 - Uses actual font weights for emphasis (e.g. "Avenir Next Medium") instead of faking bold
-- Optionally extracts colours, fonts, and logo from a website for branding
-- Integrates with [stop-slop](https://github.com/hardikpandya/stop-slop) to clean AI writing patterns from prose before rendering
+- Optionally extracts colours, fonts, and logo from a website
+- Cleans AI writing patterns from prose via stop-slop before rendering
 
 ## Install
 
@@ -38,14 +46,15 @@ No further setup needed. The skill creates its Python environment automatically 
 Ask Claude to create a Word document. The skill triggers when you mention creating, generating, or restyling `.docx` files.
 
 ```
-Create a whitepaper from docs/whitepaper.md
+Write a two-page executive summary of our product and generate it as a Word document
 ```
 
-Or with branding from a website:
+```
+Convert docs/whitepaper.md to a formatted .docx with a cover page
+```
 
 ```
-Create a whitepaper from docs/whitepaper.md
-Use our style from https://www.example.com
+Create a proposal document using our style from https://www.example.com
 ```
 
 ## How the library works
